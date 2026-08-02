@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Web Calculator</title>
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -23,8 +23,8 @@
             <div class="buttons">
                 <button class="btn btn-function" data-action="clear">AC</button>
                 <button class="btn btn-function" data-action="delete">⌫</button>
-                <button class="btn btn-function" data-action="move-left">◀</button>
-                <button class="btn btn-function" data-action="move-right">▶</button>
+                <button class="btn btn-operator" data-action="paren-open">(</button>
+                <button class="btn btn-operator" data-action="paren-close">)</button>
 
                 <button class="btn" data-number="7">7</button>
                 <button class="btn" data-number="8">8</button>
@@ -43,11 +43,11 @@
 
                 <button class="btn" data-number="0">0</button>
                 <button class="btn" data-number=".">.</button>
-                <button class="btn btn-operator" data-action="paren-open">(</button>
-                <button class="btn btn-operator" data-action="paren-close">)</button>
-
+                <button class="btn btn-operator" data-action="op" data-sym="mod">mod</button>
                 <button class="btn btn-operator" data-action="op" data-sym="+">+</button>
-                <button class="btn btn-function" data-action="op" data-sym="mod">mod</button>
+
+                <button class="btn btn-function" data-action="move-left">◀</button>
+                <button class="btn btn-function" data-action="move-right">▶</button>
                 <button class="btn btn-equals" data-action="calculate">=</button>
 
                 <!-- Scientific (hidden until toggled) -->
@@ -71,6 +71,6 @@
             </div>
         </div>
     </div>
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>

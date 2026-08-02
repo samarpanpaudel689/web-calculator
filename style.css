@@ -151,6 +151,7 @@ body {
     background-color: var(--accent-color);
     color: #ffffff;
     font-weight: 600;
+    grid-column: span 2;
 }
 
 .btn-equals:hover {
