@@ -148,3 +148,53 @@ body {
         font-size: 2rem;
     }
 }
+
+/* Toolbar (Basic / Scientific toggle) */
+.toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.tool-btn {
+    background: var(--function-bg);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.tool-btn:hover {
+    background: var(--function-hover);
+}
+
+.angle-btn.hidden,
+.tool-btn.hidden {
+    display: none;
+}
+
+/* Scientific buttons are hidden until the mode is toggled on. */
+.btn-sci {
+    display: none;
+    font-size: 1.1rem;
+    padding: 14px 0;
+}
+
+.in-sci .btn-sci {
+    display: block;
+}
+
+.btn-sci.btn-operator {
+    background: var(--function-bg);
+    color: #e2e8f0;
+}
+
+.btn-sci.btn-operator:hover {
+    background: var(--function-hover);
+}

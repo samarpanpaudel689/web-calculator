@@ -2,6 +2,7 @@ class Calculator {
     constructor(previousOperandElement, currentOperandElement) {
         this.previousOperandElement = previousOperandElement;
         this.currentOperandElement = currentOperandElement;
+        this.deg = true; // trig functions default to degrees
         this.clear();
     }
 
@@ -69,6 +70,71 @@ class Calculator {
         this.updateDisplay();
     }
 
+    /* ----------------- Scientific operations ----------------- */
+
+    // Unary function applied to the current displayed value.
+    applyUnary(type) {
+        const current = parseFloat(this.currentOperand);
+        if (isNaN(current)) return;
+
+        // Trig: DEG by default, RAD when deg is false.
+        const angle = this.deg ? current * Math.PI / 180 : current;
+        let result;
+
+        switch (type) {
+            case 'sin': result = Math.sin(angle); break;
+            case 'cos': result = Math.cos(angle); break;
+            case 'tan': result = Math.tan(angle); break;
+            case 'log': result = Math.log10(current); break;
+            case 'ln':  result = Math.log(current); break;
+            case 'sqrt': result = Math.sqrt(current); break;
+            case 'cbrt': result = Math.cbrt(current); break;
+            case 'square': result = current * current; break;
+            case 'cube': result = current * current * current; break;
+            case 'reciprocal':
+                if (current === 0) { alert('Cannot divide by zero'); this.clear(); return; }
+                result = 1 / current;
+                break;
+            case 'factorial': result = this.factorial(current); break;
+            case 'abs': result = Math.abs(current); break;
+            default: return;
+        }
+
+        this.setResult(result);
+    }
+
+    // n! for a non-negative integer.
+    factorial(n) {
+        if (!Number.isInteger(n) || n < 0 || n > 170) return NaN;
+        let r = 1;
+        for (let i = 2; i <= n; i++) r *= i;
+        return r;
+    }
+
+    // Insert a constant (π or e) as a fresh value.
+    insertConstant(kind) {
+        this.setResult(kind === 'pi' ? Math.PI : Math.E);
+    }
+
+    // Toggle trig angle units between degrees and radians.
+    toggleDeg() {
+        this.deg = !this.deg;
+        this.updateDisplay();
+    }
+
+    // Store a numeric result, guarding against non-finite values.
+    setResult(value) {
+        if (typeof value !== 'number' || !isFinite(value)) {
+            this.currentOperand = 'Error';
+        } else {
+            this.currentOperand = (Math.round(value * 1e10) / 1e10) + '';
+        }
+        this.operation = undefined;
+        this.previousOperand = '';
+        this.shouldResetScreen = true;
+        this.updateDisplay();
+    }
+
     compute() {
         let computation;
         const prev = parseFloat(this.previousOperand);
@@ -101,6 +167,17 @@ class Calculator {
                 }
                 computation = prev / current;
                 break;
+            case 'power':
+                computation = prev ** current;
+                break;
+            case 'mod':
+                if (current === 0) {
+                    alert("Cannot divide by zero");
+                    this.clear();
+                    return;
+                }
+                computation = prev % current;
+                break;
             default:
                 return;
         }
@@ -117,6 +194,8 @@ class Calculator {
         const stringNumber = number.toString();
         if (stringNumber === '') return '';
         if (stringNumber === '-') return '-';
+        if (stringNumber === 'Error' || stringNumber === 'NaN' ||
+            stringNumber === 'Infinity' || stringNumber === '-Infinity') return stringNumber;
 
         const parts = stringNumber.split('.');
         const integerDigits = parseFloat(parts[0]);
@@ -144,6 +223,8 @@ class Calculator {
             if (symbol === 'subtract') symbol = '−';
             if (symbol === 'multiply') symbol = '×';
             if (symbol === 'divide') symbol = '÷';
+            if (symbol === 'power') symbol = '^';
+            if (symbol === 'mod') symbol = 'mod';
             this.previousOperandElement.innerText = `${this.getDisplayNumber(this.previousOperand)} ${symbol}`;
         } else {
             this.previousOperandElement.innerText = '';
@@ -156,11 +237,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentOperandElement = document.getElementById('current-operand');
     const calculator = new Calculator(previousOperandElement, currentOperandElement);
 
+    // Basic / Scientific mode toggle.
+    const calculatorEl = document.getElementById('calculator');
+    const modeToggle = document.getElementById('mode-toggle');
+    const angleToggle = document.getElementById('angle-toggle');
+
+    modeToggle.addEventListener('click', () => {
+        const sci = calculatorEl.classList.toggle('in-sci');
+        modeToggle.textContent = sci ? 'Basic' : 'Scientific';
+        angleToggle.classList.toggle('hidden', !sci);
+    });
+
+    angleToggle.addEventListener('click', () => {
+        calculator.toggleDeg();
+        angleToggle.textContent = calculator.deg ? 'DEG' : 'RAD';
+    });
+
     document.querySelectorAll('[data-number]').forEach(button => {
         button.addEventListener('click', () => {
             calculator.appendNumber(button.getAttribute('data-number'));
         });
     });
+
+    const UNARY = ['sin', 'cos', 'tan', 'log', 'ln', 'sqrt', 'cbrt',
+        'square', 'cube', 'reciprocal', 'factorial', 'abs'];
+    const CONSTANTS = ['pi', 'e'];
 
     document.querySelectorAll('[data-action]').forEach(button => {
         button.addEventListener('click', () => {
@@ -182,10 +283,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'subtract':
                 case 'multiply':
                 case 'divide':
+                case 'power':
+                case 'mod':
                     calculator.chooseOperation(action);
                     break;
                 case 'calculate':
                     calculator.compute();
+                    break;
+                default:
+                    if (UNARY.includes(action)) calculator.applyUnary(action);
+                    else if (CONSTANTS.includes(action)) calculator.insertConstant(action);
                     break;
             }
         });
