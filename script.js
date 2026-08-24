@@ -1,5 +1,5 @@
 /* ============================================================
-   Modern Web Calculator — expression editor
+   Web Calculator — expression editor
    Type a full expression (with brackets, prefixes like sin(90),
    and stacked functions), move the caret anywhere to edit, and
    evaluate with '='. Styles a caret so you always know where

@@ -1,19 +1,17 @@
 # Web Calculator
 
-A responsive calculator built with HTML, CSS, and JavaScript.
+A calculator where you type the whole expression like text instead of
+punching one operation at a time. `2 + 3 × 4` just works, with proper
+precedence. The caret moves freely (arrow keys or the on-screen ◀ ▶), so
+fixing a typo means stepping back two characters, not starting over.
 
-## Features
+Open `index.html` and it runs — plain HTML/CSS/JS, nothing to install.
 
-- **Expression editor**: Type a full expression and evaluate it with `=`. Move the caret (◀/▶, arrow keys, or tap the display) to edit anywhere instead of clearing everything.
-- **Brackets**: Insert `(` / `)` groups; a `)` is only inserted when there is an open paren to close.
-- **Prefix functions**: `sin(90)`, `cos(30)`, `ln(e)`, `log(1000)`.
-- **Nested functions**: Chain them, e.g. `cos(sin(90))`.
-- **Operators with precedence**: `+ - × ÷ mod ^`, unary minus, postfix `!` (factorial), and `( )` grouping.
-- **Dark theme**, plain layout.
-- **Scientific mode**: Toggle to show extra keys — trig with a DEG/RAD angle toggle, `log`, `ln`, `√`, `∛`, `x²`, `x³`, `xʸ`, `n!`, `|x|`, plus constants `π` and `e`.
-- **Keyboard support**: Digits and operators, arrow keys for the caret, `Backspace`, `Enter`/`=` to evaluate, `Escape` to clear, and letter shortcuts (`s`, `c`, `t`, `g`, `l`, `r`) for the functions.
-- **Responsive**: Mobile-friendly layout.
+Beyond the basics: parentheses, unary minus, factorial, `mod`, powers.
+Scientific mode adds trig with a DEG/RAD switch, logs, roots, `π` and `e`.
+The keyboard works throughout — digits, operators, arrows, Enter to
+evaluate, Escape to clear — and in scientific mode letters are shortcuts,
+like `s` for `sin(`.
 
-## Getting Started
-
-Open `index.html` in a web browser, or view it on GitHub Pages if enabled.
+One quirk on purpose: Backspace deletes a whole token, so `sin(` goes in
+with one key and comes out with one key.
