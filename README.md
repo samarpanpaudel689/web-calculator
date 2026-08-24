@@ -1,21 +1,19 @@
-# Modern Web Calculator
+# Web Calculator
 
-A sleek, responsive, modern calculator built using HTML, CSS, and vanilla JavaScript.
+A responsive calculator built with HTML, CSS, and JavaScript.
 
 ## Features
 
-- **Expression Editor**: Type a full expression and evaluate it with `=`. Move the caret (◀/▶, arrow keys, or tap the display) to edit anywhere — no need to clear everything.
-- **Bracket System**: Add matching `(` / `)` groups; a `)` is only inserted when there's an open paren to close.
-- **Functions before operands**: `sin(90)`, `cos(30)`, `ln(e)`, `log(1000)`… typed the natural way.
-- **Stacked Functions**: Chain them — e.g. `cos(sin(90))` — and nest groups freely.
-- **Full operator set with precedence**: `+ - × ÷ mod ^` plus unary minus and postfix `!` (factorial), with `( )` grouping.
-- **Modern Dark UI**: Clean interface built with modern typography and fluid styling.
-- **Scientific Mode**: Toggle to reveal/keep advanced keys — trig with a **DEG / RAD** angle toggle, `log`, `ln`, `√`, `∛`, `x²`, `x³`, `xʸ`, `n!`, `|x|`, and constants `π` and `e`.
-- **Keyboard Support**: All digits/operators, arrows for the caret, `Backspace`, `Enter`/`=` to evaluate, `Escape` to clear, and shortcuts like `s`, `c`, `t`, `g`, `l`, `r` for `sin(...)`, `cos(...)`, etc.
-- **Responsive Design**: Mobile-friendly layout.
+- **Expression editor**: Type a full expression and evaluate it with `=`. Move the caret (◀/▶, arrow keys, or tap the display) to edit anywhere instead of clearing everything.
+- **Brackets**: Insert `(` / `)` groups; a `)` is only inserted when there is an open paren to close.
+- **Prefix functions**: `sin(90)`, `cos(30)`, `ln(e)`, `log(1000)`.
+- **Nested functions**: Chain them, e.g. `cos(sin(90))`.
+- **Operators with precedence**: `+ - × ÷ mod ^`, unary minus, postfix `!` (factorial), and `( )` grouping.
+- **Dark theme**, plain layout.
+- **Scientific mode**: Toggle to show extra keys — trig with a DEG/RAD angle toggle, `log`, `ln`, `√`, `∛`, `x²`, `x³`, `xʸ`, `n!`, `|x|`, plus constants `π` and `e`.
+- **Keyboard support**: Digits and operators, arrow keys for the caret, `Backspace`, `Enter`/`=` to evaluate, `Escape` to clear, and letter shortcuts (`s`, `c`, `t`, `g`, `l`, `r`) for the functions.
+- **Responsive**: Mobile-friendly layout.
 
 ## Getting Started
 
-Simply open `index.html` in any modern web browser to use the calculator.
-
-Alternatively, view it using GitHub Pages if enabled.
+Open `index.html` in a web browser, or view it on GitHub Pages if enabled.

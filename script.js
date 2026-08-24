@@ -20,7 +20,8 @@ function htmlEscape(s) {
 
 function fmtNumber(x) {
     if (typeof x !== 'number' || !isFinite(x)) return 'Error';
-    return (Math.round(x * 1e10) / 1e10) + '';
+    const r = Math.round(x * 1e10) / 1e10;
+    return (isFinite(r) ? r : x) + '';
 }
 
 class Calculator {
@@ -98,7 +99,7 @@ class Calculator {
         } else {
             this.prevText = raw + ' =';
             this.exp = 'Error';
-            this.pos = 0;
+            this.pos = this.exp.length;
         }
         this.repaint();
         this.keepCaretVisible();
@@ -124,9 +125,10 @@ class Calculator {
         const leftEl = this.curEl.querySelector('.expr-left');
         const caretEl = this.curEl.querySelector('.caret');
         if (!leftEl || !caretEl) return;
-        const cw = caretEl.offsetLeft - this.curEl.scrollLeft;
-        if (cw > this.curEl.clientWidth - 16) this.curEl.scrollLeft = caretEl.offsetLeft - 24;
-        else if (cw < 0) this.curEl.scrollLeft = caretEl.offsetLeft;
+        // caret position relative to the visible box of the display
+        const cw = caretEl.getBoundingClientRect().left - this.curEl.getBoundingClientRect().left;
+        if (cw > this.curEl.clientWidth - 16) this.curEl.scrollLeft += cw - (this.curEl.clientWidth - 24);
+        else if (cw < 0) this.curEl.scrollLeft += cw - 8;
     }
 
     /* Map a pointer position on the display to the nearest caret index. */
@@ -175,6 +177,15 @@ function tokenize(src) {
                 if (src[j] === '.') dots++;
                 if (dots > 1) return null; // malformed number
                 j++;
+            }
+            // allow a trailing exponent so results like 1.5e+21 can be re-evaluated
+            if (src[j] === 'e' || src[j] === 'E') {
+                let k = j + 1;
+                if (src[k] === '+' || src[k] === '-') k++;
+                if (/[0-9]/.test(src[k] || '')) {
+                    j = k;
+                    while (j < src.length && /[0-9]/.test(src[j])) j++;
+                }
             }
             const val = parseFloat(src.slice(i, j));
             tokens.push({ type: 'num', value: val });
@@ -328,11 +339,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelectorAll('[data-number]').forEach(btn => {
-        btn.addEventListener('click', () => calc.insert(btn.getAttribute('data-number')));
+        btn.addEventListener('click', (ev) => {
+            if (ev.detail > 0) btn.blur(); // keep a clicked key from re-firing on Enter/Space
+            calc.insert(btn.getAttribute('data-number'));
+        });
     });
 
     document.querySelectorAll('[data-action]').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (ev) => {
+            if (ev.detail > 0) btn.blur(); // keep a clicked key from re-firing on Enter/Space
             const a = btn.getAttribute('data-action');
             switch (a) {
                 case 'clear': calc.clear(); break;
@@ -363,6 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('keydown', (e) => {
         const k = e.key;
+        if (e.ctrlKey || e.metaKey || e.altKey) return; // let browser shortcuts through
         if ((k >= '0' && k <= '9') || k === '.') { calc.insert(k); }
         else if (k === '+') { calc.op('+'); }
         else if (k === '-') { calc.op('\u2212'); }

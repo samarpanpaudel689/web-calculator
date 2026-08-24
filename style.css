@@ -86,13 +86,13 @@ body {
 }
 .current-operand::-webkit-scrollbar { display: none; }
 .current-operand .expr-left { color: var(--text-primary); }
-.current-operand .expr-right { color: var(--text-muted); }
+.current-operand .expr-right { color: var(--text-secondary); }
 .current-operand .caret {
     display: inline-block;
     width: 2px;
     height: 1.3em;
     margin: 0 1px;
-    background: var(--accent);
+    background: var(--accent-color);
     border-radius: 1px;
     animation: caretBlink 1s step-start infinite;
 }
